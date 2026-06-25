@@ -1,14 +1,10 @@
 import {
   ArrowRight,
   Check,
-  Activity,
-  Globe,
   Mail,
   Phone,
   MapPin,
   GraduationCap,
-  Award,
-  type LucideIcon,
 } from "lucide-react";
 import {
   motion,
@@ -27,6 +23,9 @@ const heroVideo =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
 const heroPoster = `${import.meta.env.BASE_URL}hero-poster.jpg`;
 
+// Isometric golden-hour illustration assets (sliced from the hero artwork set).
+const asset = (name: string) => `${import.meta.env.BASE_URL}assets/${name}`;
+
 type StyledSegment = {
   text: string;
   className?: string;
@@ -41,7 +40,7 @@ const navItems = [
 ];
 
 type Project = {
-  icon: LucideIcon;
+  image: string;
   title: string;
   role: string;
   description: string;
@@ -52,6 +51,7 @@ type Project = {
 const featuredProject = {
   badge: "核心项目 · AI Agent",
   status: "论文写作阶段",
+  image: "scene-agent.webp",
   title: "TGVP · 网页智能体任务规划",
   role: "主要开发者 / 研究",
   description:
@@ -66,7 +66,7 @@ const featuredProject = {
 
 const projects: Project[] = [
   {
-    icon: Activity,
+    image: "scene-charts.webp",
     title: "智愈 · 肌电信号康复监测",
     role: "算法与软件开发 · 创新比赛项目",
     description:
@@ -79,7 +79,7 @@ const projects: Project[] = [
     ],
   },
   {
-    icon: Globe,
+    image: "scene-code.webp",
     title: "CoFind · AI 浏览器 Agent",
     role: "独立开发",
     description:
@@ -104,10 +104,12 @@ const projects: Project[] = [
 const skillGroups = [
   {
     title: "编程语言",
+    icon: "ic-laptop.webp",
     items: ["Python（主力）", "C（基础）", "JavaScript / TypeScript", "HTML / CSS", "SQL"],
   },
   {
     title: "AI / 大模型",
+    icon: "ic-bulb.webp",
     items: [
       "Vibe Coding（熟练）",
       "Claude Code / Codex 长期使用",
@@ -119,10 +121,12 @@ const skillGroups = [
   },
   {
     title: "数据与科学计算",
+    icon: "ic-glass.webp",
     items: ["NumPy", "Pandas", "Matplotlib", "数据清洗 / 可视化", "实验统计分析"],
   },
   {
     title: "框架与工具",
+    icon: "ic-gears.webp",
     items: [
       "PyQt6",
       "Flask / FastAPI",
@@ -136,7 +140,7 @@ const skillGroups = [
 ];
 
 type ExperienceItem = {
-  icon: LucideIcon;
+  icon: string;
   period: string;
   title: string;
   role: string;
@@ -145,7 +149,7 @@ type ExperienceItem = {
 
 const experience: ExperienceItem[] = [
   {
-    icon: GraduationCap,
+    icon: "ic-gradcap.webp",
     period: "2025 – 2029",
     title: "云南中医药大学 · 信息学院",
     role: "医学信息工程 · 本科在读",
@@ -155,7 +159,7 @@ const experience: ExperienceItem[] = [
     ],
   },
   {
-    icon: Award,
+    icon: "ic-scroll.webp",
     period: "2026.06 · 昆明",
     title: "ICBDSE 2026 · IEEE 第三届大数据科学与工程国际会议",
     role: "志愿者 · 获评「最佳志愿者」",
@@ -562,6 +566,18 @@ function About() {
             />
           </h2>
           <ScrollRevealText text={aboutCopy} />
+          <Reveal index={1} className="mx-auto mt-12 max-w-2xl md:mt-16">
+            <div className="group relative overflow-hidden rounded-2xl border border-white/10 shadow-[0_30px_70px_-40px_rgba(0,0,0,0.9)]">
+              <img
+                src={asset("scene-pavilion.webp")}
+                alt="等距风格插画：悬浮山崖上的院落与林木，金色暮光"
+                loading="lazy"
+                className="aspect-[16/9] w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface/70 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10" />
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -570,18 +586,28 @@ function About() {
 
 function FeaturedProject() {
   return (
-    <Reveal className="overflow-hidden rounded-2xl border border-white/10 bg-surface-raised shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)] md:rounded-[1.75rem]">
-      <div className="grid gap-8 p-6 sm:p-8 md:grid-cols-5 md:gap-10 md:p-10">
+    <Reveal className="group overflow-hidden rounded-2xl border border-white/10 bg-surface-raised shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)] md:rounded-[1.75rem]">
+      <div className="relative h-52 overflow-hidden sm:h-64 md:h-80">
+        <img
+          src={asset(featuredProject.image)}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-raised via-surface-raised/25 to-transparent" />
+        <div className="absolute left-6 top-6 flex flex-wrap items-center gap-3 sm:left-8 sm:top-8 md:left-10">
+          <span className="inline-flex rounded-full bg-primary px-3 py-1 text-[11px] font-medium text-black">
+            {featuredProject.badge}
+          </span>
+          <span className="inline-flex rounded-full border border-white/20 bg-ink/40 px-3 py-1 text-[11px] text-primary/80 backdrop-blur-sm">
+            {featuredProject.status}
+          </span>
+        </div>
+      </div>
+      <div className="grid gap-8 p-6 sm:p-8 md:grid-cols-5 md:gap-10 md:p-10 md:pt-8">
         <div className="md:col-span-3">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="inline-flex rounded-full bg-primary px-3 py-1 text-[11px] font-medium text-black">
-              {featuredProject.badge}
-            </span>
-            <span className="inline-flex rounded-full border border-white/15 px-3 py-1 text-[11px] text-primary/70">
-              {featuredProject.status}
-            </span>
-          </div>
-          <h3 className="mt-6 text-2xl font-medium leading-tight text-primary sm:text-3xl">
+          <h3 className="text-2xl font-medium leading-tight text-primary sm:text-3xl">
             {featuredProject.title}
           </h3>
           <p className="mt-2 text-sm text-stone-500">{featuredProject.role}</p>
@@ -613,46 +639,49 @@ function FeaturedProject() {
 }
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const Icon = project.icon;
-
   return (
     <Reveal
       index={index}
       lift
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/5 bg-surface-raised p-6 transition-colors duration-300 hover:border-white/20 md:rounded-[1.5rem] sm:p-7"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/5 bg-surface-raised transition-colors duration-300 hover:border-white/20 md:rounded-[1.5rem]"
     >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute right-6 top-6 font-serif text-sm italic text-primary/25"
-      >
-        {String(index + 1).padStart(2, "0")}
-      </span>
-      <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-accent transition-colors duration-300 group-hover:border-accent/40">
-        <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.5} />
-      </span>
-      <h3 className="mt-6 text-xl font-normal leading-tight text-primary sm:text-2xl">
-        {project.title}
-      </h3>
-      <p className="mt-2 text-xs text-stone-500 sm:text-sm">{project.role}</p>
-      <p className="mt-4 text-sm leading-[1.75] text-stone-400">{project.description}</p>
-      <ul className="mt-5 space-y-3">
-        {project.highlights.map((item) => (
-          <li key={item} className="flex gap-3 text-sm leading-snug text-stone-400">
-            <Check
-              aria-hidden="true"
-              className="mt-0.5 h-4 w-4 flex-none text-primary"
-              strokeWidth={1.5}
-            />
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-auto pt-7">
-        <TechTags tech={project.tech} />
+      <div className="relative h-40 overflow-hidden sm:h-44">
+        <img
+          src={asset(project.image)}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-raised via-surface-raised/10 to-transparent" />
+        <span
+          aria-hidden="true"
+          className="absolute right-5 top-4 font-serif text-sm italic text-primary/70 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]"
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </div>
+      <div className="flex flex-1 flex-col p-6 sm:p-7">
+        <h3 className="text-xl font-normal leading-tight text-primary sm:text-2xl">
+          {project.title}
+        </h3>
+        <p className="mt-2 text-xs text-stone-500 sm:text-sm">{project.role}</p>
+        <p className="mt-4 text-sm leading-[1.75] text-stone-400">{project.description}</p>
+        <ul className="mt-5 space-y-3">
+          {project.highlights.map((item) => (
+            <li key={item} className="flex gap-3 text-sm leading-snug text-stone-400">
+              <Check
+                aria-hidden="true"
+                className="mt-0.5 h-4 w-4 flex-none text-primary"
+                strokeWidth={1.5}
+              />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-auto pt-7">
+          <TechTags tech={project.tech} />
+        </div>
       </div>
     </Reveal>
   );
@@ -699,12 +728,21 @@ function Skills() {
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
               />
-              <div className="flex items-baseline justify-between gap-4">
-                <div className="flex items-baseline gap-3">
-                  <span className="font-serif text-sm italic text-accent">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="text-base font-medium text-primary sm:text-lg">{group.title}</h3>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <img
+                    src={asset(group.icon)}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    className="h-14 w-14 flex-none object-contain drop-shadow-[0_6px_14px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-105 sm:h-16 sm:w-16"
+                  />
+                  <div>
+                    <span className="font-serif text-sm italic text-accent">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="text-base font-medium text-primary sm:text-lg">{group.title}</h3>
+                  </div>
                 </div>
                 <span className="text-[11px] tabular-nums tracking-[0.1em] text-primary/30">
                   {String(group.items.length).padStart(2, "0")}
@@ -798,15 +836,20 @@ function Experience() {
           />
           <div className="space-y-5">
             {experience.map((item, index) => {
-              const Icon = item.icon;
               return (
                 <Reveal
                   key={item.title}
                   index={index}
                   className="relative pl-[72px] md:pl-20"
                 >
-                  <span className="absolute left-0 top-0 flex h-14 w-14 flex-none items-center justify-center rounded-full border border-white/10 bg-surface-raised md:h-16 md:w-16">
-                    <Icon aria-hidden="true" className="h-5 w-5 text-accent md:h-6 md:w-6" strokeWidth={1.5} />
+                  <span className="absolute left-0 top-0 flex h-14 w-14 flex-none items-center justify-center rounded-2xl border border-white/10 bg-surface-raised md:h-16 md:w-16">
+                    <img
+                      src={asset(item.icon)}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      className="h-11 w-11 object-contain md:h-[52px] md:w-[52px]"
+                    />
                   </span>
                   <div className="rounded-2xl border border-white/5 bg-surface-raised p-6 transition-colors duration-300 hover:border-white/10 sm:p-8">
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
