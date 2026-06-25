@@ -209,7 +209,7 @@ function NamePullUp({ name }: { name: string }) {
   return (
     <span ref={ref} className="inline-flex">
       {chars.map((char, index) => (
-        <span key={`${char}-${index}`} className="inline-block overflow-hidden">
+        <span key={`${char}-${index}`} className="inline-block overflow-visible">
           <motion.span
             className="inline-block will-change-transform"
             initial={reduceMotion ? false : { y: 26 }}
@@ -255,7 +255,7 @@ function PullUpHeading({
       {tokens.map(({ token, className: tokenClassName, segmentIndex }, index) => (
         <span
           key={`${segmentIndex}-${index}`}
-          className="inline-block overflow-hidden"
+          className="inline-block overflow-visible"
         >
           <motion.span
             className={`inline-block will-change-transform ${tokenClassName}`}
@@ -474,7 +474,7 @@ function Hero() {
                 AI 应用开发 · 大模型智能体 · 医学信息工程
               </motion.p>
               <h1
-                className="select-none text-[20vw] font-medium leading-[0.82] tracking-[-0.04em] text-primary sm:text-[20vw] sm:tracking-[-0.04em] md:text-[15vw] lg:text-[13vw] xl:text-[12vw]"
+                className="select-none overflow-visible py-[0.08em] text-[20vw] font-medium leading-[1.02] tracking-[-0.03em] text-primary sm:text-[20vw] sm:tracking-[-0.03em] md:text-[15vw] lg:text-[13vw] xl:text-[12vw]"
               >
                 <NamePullUp name="孙允斌" />
               </h1>
