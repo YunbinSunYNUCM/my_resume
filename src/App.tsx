@@ -18,7 +18,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 const primaryText = "#E1E0CC";
 const easeOut = [0.16, 1, 0.3, 1] as const;
@@ -411,7 +411,24 @@ function Navbar() {
 
 function Hero() {
   const reduceMotion = useReducedMotion();
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.playsInline = true;
+
+    const playPromise = video.play();
+    if (playPromise) {
+      playPromise.catch(() => {
+        // Some mobile browsers still block autoplay in low-power/data-saver modes.
+        // In that case the poster remains visible until the user/browser allows playback.
+      });
+    }
+  }, []);
 
   return (
     <section className="relative min-h-[100dvh] bg-ink p-4 md:p-6">
@@ -424,8 +441,9 @@ function Hero() {
           draggable={false}
         />
         <video
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-            videoPlaying ? "opacity-100" : "opacity-0"
+          ref={videoRef}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+            videoReady ? "opacity-100" : "opacity-0"
           }`}
           src={heroVideo}
           poster={heroPoster}
@@ -433,9 +451,11 @@ function Hero() {
           loop
           muted
           playsInline
-          preload="metadata"
-          onPlaying={() => setVideoPlaying(true)}
-          onError={() => setVideoPlaying(false)}
+          preload="auto"
+          onLoadedData={() => setVideoReady(true)}
+          onCanPlay={() => setVideoReady(true)}
+          onPlaying={() => setVideoReady(true)}
+          onError={() => setVideoReady(false)}
         />
         <div className="noise-overlay pointer-events-none absolute inset-0 opacity-[0.7] mix-blend-overlay" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/5 to-ink/80" />
