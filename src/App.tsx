@@ -25,6 +25,7 @@ const easeOut = [0.16, 1, 0.3, 1] as const;
 
 const heroVideo =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
+const heroPoster = `${import.meta.env.BASE_URL}hero-poster.jpg`;
 
 type StyledSegment = {
   text: string;
@@ -410,18 +411,31 @@ function Navbar() {
 
 function Hero() {
   const reduceMotion = useReducedMotion();
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   return (
     <section className="relative min-h-[100dvh] bg-ink p-4 md:p-6">
       <div className="relative min-h-[calc(100dvh-2rem)] overflow-hidden rounded-2xl md:min-h-[calc(100dvh-3rem)] md:rounded-[2rem]">
-        <video
+        <img
+          src={heroPoster}
+          alt=""
+          aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover"
+          draggable={false}
+        />
+        <video
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+            videoPlaying ? "opacity-100" : "opacity-0"
+          }`}
           src={heroVideo}
+          poster={heroPoster}
           autoPlay
           loop
           muted
           playsInline
           preload="metadata"
+          onPlaying={() => setVideoPlaying(true)}
+          onError={() => setVideoPlaying(false)}
         />
         <div className="noise-overlay pointer-events-none absolute inset-0 opacity-[0.7] mix-blend-overlay" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/5 to-ink/80" />
