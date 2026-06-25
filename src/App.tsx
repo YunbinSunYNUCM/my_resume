@@ -376,10 +376,22 @@ function TechTags({ tech }: { tech: string[] }) {
   );
 }
 
-function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
+function SectionTitle({
+  index,
+  kicker,
+  title,
+}: {
+  index: string;
+  kicker: string;
+  title: string;
+}) {
   return (
     <Reveal className="mb-10 md:mb-14">
-      <p className="mb-3 text-[11px] tracking-[0.25em] text-primary/60">{kicker}</p>
+      <div className="mb-5 flex items-center gap-4">
+        <span className="font-serif text-base italic text-accent">{index}</span>
+        <span className="h-px flex-1 bg-gradient-to-r from-accent/40 via-white/10 to-transparent" />
+        <p className="text-[11px] tracking-[0.25em] text-primary/50">{kicker}</p>
+      </div>
       <h2 className="text-3xl font-medium leading-tight text-primary sm:text-4xl md:text-5xl">
         {title}
       </h2>
@@ -607,10 +619,22 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     <Reveal
       index={index}
       lift
-      className="flex h-full flex-col rounded-2xl border border-white/5 bg-surface-raised p-6 transition-colors duration-300 hover:border-white/20 md:rounded-[1.5rem] sm:p-7"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/5 bg-surface-raised p-6 transition-colors duration-300 hover:border-white/20 md:rounded-[1.5rem] sm:p-7"
     >
-      <Icon aria-hidden="true" className="h-9 w-9 text-primary" strokeWidth={1.5} />
-      <h3 className="mt-7 text-xl font-normal leading-tight text-primary sm:text-2xl">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute right-6 top-6 font-serif text-sm italic text-primary/25"
+      >
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-accent transition-colors duration-300 group-hover:border-accent/40">
+        <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.5} />
+      </span>
+      <h3 className="mt-6 text-xl font-normal leading-tight text-primary sm:text-2xl">
         {project.title}
       </h3>
       <p className="mt-2 text-xs text-stone-500 sm:text-sm">{project.role}</p>
@@ -636,9 +660,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 function Projects() {
   return (
-    <section id="projects" className="bg-ink px-4 py-20 sm:px-6 md:py-28">
-      <div className="mx-auto max-w-6xl">
-        <SectionTitle kicker="项目经历" title="把研究与场景做成系统" />
+    <section id="projects" className="relative overflow-hidden bg-ink px-4 py-20 sm:px-6 md:py-28">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-10 h-[420px] w-[620px] max-w-[80%] translate-x-1/4 rounded-full bg-accent/[0.05] blur-[150px]"
+      />
+      <div className="relative mx-auto max-w-6xl">
+        <SectionTitle index="01" kicker="项目经历" title="把研究与场景做成系统" />
         <FeaturedProject />
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
           {projects.map((project, index) => (
@@ -652,23 +680,41 @@ function Projects() {
 
 function Skills() {
   return (
-    <section id="skills" className="bg-ink px-4 py-20 sm:px-6 md:py-28">
-      <div className="mx-auto max-w-6xl">
-        <SectionTitle kicker="技能" title="工具与方向" />
+    <section id="skills" className="relative overflow-hidden bg-ink px-4 py-20 sm:px-6 md:py-28">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 h-[420px] w-[620px] max-w-[80%] -translate-x-1/4 rounded-full bg-accent/[0.045] blur-[150px]"
+      />
+      <div className="relative mx-auto max-w-6xl">
+        <SectionTitle index="02" kicker="技能" title="工具与方向" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {skillGroups.map((group, index) => (
             <Reveal
               key={group.title}
               index={index}
               lift
-              className="rounded-2xl border border-white/5 bg-surface-raised p-6 transition-colors duration-300 hover:border-white/20 sm:p-7"
+              className="group relative overflow-hidden rounded-2xl border border-white/5 bg-surface-raised p-6 transition-colors duration-300 hover:border-white/20 sm:p-7"
             >
-              <h3 className="text-base font-medium text-primary sm:text-lg">{group.title}</h3>
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              />
+              <div className="flex items-baseline justify-between gap-4">
+                <div className="flex items-baseline gap-3">
+                  <span className="font-serif text-sm italic text-accent">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="text-base font-medium text-primary sm:text-lg">{group.title}</h3>
+                </div>
+                <span className="text-[11px] tabular-nums tracking-[0.1em] text-primary/30">
+                  {String(group.items.length).padStart(2, "0")}
+                </span>
+              </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 {group.items.map((item) => (
                   <span
                     key={item}
-                    className="inline-flex rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-stone-300"
+                    className="inline-flex rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-stone-300 transition-colors duration-300 group-hover:border-white/15"
                   >
                     {item}
                   </span>
@@ -744,28 +790,33 @@ function Experience() {
   return (
     <section id="experience" className="bg-ink px-4 py-20 sm:px-6 md:py-28">
       <div className="mx-auto max-w-6xl">
-        <SectionTitle kicker="教育与经历" title="学习、研究与参与" />
-        <div className="space-y-4">
-          {experience.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <Reveal
-                key={item.title}
-                index={index}
-                className="rounded-2xl border border-white/5 bg-surface-raised p-6 transition-colors duration-300 hover:border-white/10 sm:p-8"
-              >
-                <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10">
-                  <div className="flex items-center gap-4 md:w-64 md:flex-none md:flex-col md:items-start md:gap-3">
-                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/[0.03]">
-                      <Icon aria-hidden="true" className="h-5 w-5 text-primary" strokeWidth={1.5} />
-                    </span>
-                    <span className="text-xs tracking-[0.15em] text-primary/60">{item.period}</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-medium leading-snug text-primary sm:text-xl">
+        <SectionTitle index="03" kicker="教育与经历" title="学习、研究与参与" />
+        <div className="relative">
+          <span
+            aria-hidden="true"
+            className="absolute left-[27px] top-6 bottom-6 w-px bg-gradient-to-b from-accent/40 via-white/10 to-transparent md:left-[31px]"
+          />
+          <div className="space-y-5">
+            {experience.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <Reveal
+                  key={item.title}
+                  index={index}
+                  className="relative pl-[72px] md:pl-20"
+                >
+                  <span className="absolute left-0 top-0 flex h-14 w-14 flex-none items-center justify-center rounded-full border border-white/10 bg-surface-raised md:h-16 md:w-16">
+                    <Icon aria-hidden="true" className="h-5 w-5 text-accent md:h-6 md:w-6" strokeWidth={1.5} />
+                  </span>
+                  <div className="rounded-2xl border border-white/5 bg-surface-raised p-6 transition-colors duration-300 hover:border-white/10 sm:p-8">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                      <span className="text-xs tracking-[0.15em] text-accent/80">{item.period}</span>
+                      <span className="h-3 w-px bg-white/15" aria-hidden="true" />
+                      <span className="text-xs text-stone-500">{item.role}</span>
+                    </div>
+                    <h3 className="mt-3 text-lg font-medium leading-snug text-primary sm:text-xl">
                       {item.title}
                     </h3>
-                    <p className="mt-1.5 text-sm text-stone-500">{item.role}</p>
                     <ul className="mt-5 space-y-3">
                       {item.points.map((point) => (
                         <li key={point} className="flex gap-3 text-sm leading-relaxed text-stone-400">
@@ -779,10 +830,10 @@ function Experience() {
                       ))}
                     </ul>
                   </div>
-                </div>
-              </Reveal>
-            );
-          })}
+                </Reveal>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
